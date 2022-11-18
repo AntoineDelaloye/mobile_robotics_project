@@ -1,2 +1,2 @@
-# mobile_robotics_project
-# Antoine Delaloye, Ruben Jungius, Marco Pontarolo, Amine Tourki
+# Mobile Robotics Project
+Antoine Delaloye, Ruben Jungius, Marco Pontarolo, Amine Tourki
