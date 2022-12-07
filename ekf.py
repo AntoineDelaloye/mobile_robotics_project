@@ -118,4 +118,4 @@ class ExtendedKalmanFilter:
 
     def run_ekm(self, control, position):
         self.prediction_step(control)
-        # self.update_step(position)
+        self.update_step(position)
