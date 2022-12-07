@@ -5,7 +5,7 @@ import numpy as np
 state = np.array([0,0,0])
 covariance = np.matrix([[0,0,0],[0,0,0],[0,0,0]])
 width = 110
-speedfactor = 0.43478260869565216 # 0.31746
+speedfactor = 0.43478260869565216 # 0.3174603175 (140 mm in 4.41 seconds at 100 speed)
 dt = 1
 sig_left = 0.1
 sig_right = 0.1
