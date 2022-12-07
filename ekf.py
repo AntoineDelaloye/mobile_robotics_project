@@ -12,8 +12,8 @@ class ExtendedKalmanFilter:
         self.width = width # width of robot in mm
         self.speedfactor = speedfactor # nb ticks per full wheel rotation
         self.dt = dt # time interval in seconds
-        self.sigma_control = np.matrix(np.diag([sig_left,sig_right]))
-        self.sigma_camera = np.matrix(np.diag([sig_x,sig_y,sig_theta]))
+        self.sigma_control = np.matrix(np.diag([sig_left**2,sig_right**2]))
+        self.sigma_camera = np.matrix(np.diag([sig_x**2,sig_y**2,sig_theta**2]))
 
     def convert_control(self, control): # convert control from velocity to mm
         vl,vr = control

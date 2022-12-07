@@ -5,7 +5,7 @@ import numpy as np
 state = np.array([0,0,0])
 covariance = np.matrix([[0,0,0],[0,0,0],[0,0,0]])
 width = 110
-speedfactor = 0.43478260869565216
+speedfactor = 0.43478260869565216 # 0.31746
 dt = 1
 sig_left = 0.1
 sig_right = 0.1
@@ -19,13 +19,5 @@ print("[State] {}".format(kf.state))
 print("[Covar] {}".format(kf.covariance))
 
 kf.run_ekm(np.array([200,200]), np.array([87,0,0]))
-print("[State] {}".format(kf.state))
-print("[Covar] {}".format(kf.covariance))
-
-kf.run_ekm(np.array([200,300]), np.array([192.57146319,22, 0.5]))
-print("[State] {}".format(kf.state))
-print("[Covar] {}".format(kf.covariance))
-
-kf.run_ekm(np.array([300,200]), np.array([350,44,0]))
 print("[State] {}".format(kf.state))
 print("[Covar] {}".format(kf.covariance))
