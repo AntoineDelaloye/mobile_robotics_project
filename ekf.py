@@ -1,8 +1,9 @@
 import numpy as np
+from numpy.linalg import inv
 import math
 
 class ExtendedKalmanFilter:
-    def __init__(self,state,covariance,width,diameter,N,dt,sig_left,sig_right): # constructor
+    def __init__(self,state,covariance,width,diameter,N,dt,sig_left,sig_right, sig_x, sig_y, sig_theta): # constructor
         # covariance and state
         self.state = state # mu t-1
         self.covariance = covariance # Sigma t-1
@@ -13,6 +14,7 @@ class ExtendedKalmanFilter:
         self.N = N # nb ticks per full wheel rotation
         self.dt = dt # time interval in seconds
         self.sigma_control = np.matrix(np.diag([sig_left,sig_right]))
+        self.sigma_camera = np.matrix(np.diag([sig_x,sig_y,sig_theta]))
 
     def convert_control(self, control): # convert control from velocity to mm
         vl,vr = control
@@ -90,6 +92,10 @@ class ExtendedKalmanFilter:
 
         return np.matrix([[dg1_dl,dg1_dr],[dg1_dl,dg1_dr],[dg1_dl,dg1_dr]])
 
+    def h(self, position):
+        x,y,theta = position
+        return np.matrix([x,y,theta])
+
     def prediction_step(self,control):
         control = self.convert_control(control) # convert control
         self.state = self.g(control) # get next state
@@ -100,5 +106,11 @@ class ExtendedKalmanFilter:
         except Exception as e:
             print("[Error] {}".format(e))
 
-    def measurment_step():
+    def update_step(self,position): # Jacobian of h is just the identiy Matrix
+        x,y,theta = position
+        delta_t = np.matrix([0,0,0])
+        I = np.matrix(np.diag([1,1,1]))
+        K = self.covariance * (self.covariance * inv(self.sigma_camera))# Kalman Gain
+        self.state = self.state + K*(self.h(position)+detla_t-h(self.state))
+        self.covariance = (I-K)*self.covariance
         return 0

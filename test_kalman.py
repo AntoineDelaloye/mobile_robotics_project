@@ -10,7 +10,10 @@ N = 200
 dt = 1
 sig_left = 0.1
 sig_right = 0.1
-kf = ExtendedKalmanFilter(state,covariance,width,diameter,N,dt,sig_left,sig_right)
+sig_x = 0.1
+sig_y = 0.1
+sig_theta = 0.1
+kf = ExtendedKalmanFilter(state,covariance,width,diameter,N,dt,sig_left,sig_right,sig_x,sig_y,sig_theta)
 # print(kf.x)
 # print(kf.g(1,2,3,4,5))
 print(kf.state)
