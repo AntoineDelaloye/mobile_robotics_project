@@ -103,7 +103,7 @@ class ExtendedKalmanFilter:
             G = self.dg_dstate(control)
             V = self.dg_dcontrol(control)
             self.covariance = G*self.covariance*G.transpose(1,0)+V*self.sigma_control*V.transpose(1,0)
-            print("[Predict] Covariance: {}".format(self.covariance))
+            # print("[Predict] Covariance: {}".format(self.covariance))
         except Exception as e:
             print("[Error] {}".format(e))
 
@@ -111,12 +111,11 @@ class ExtendedKalmanFilter:
         x,y,theta = position
         I = np.matrix(np.diag([1,1,1]))
         K = self.covariance * (self.covariance * inv(self.sigma_camera))# Kalman Gain
-        print("[Update] Kalman: {}".format(K))
+        # print("[Update] Kalman: {}".format(K))
         new_state = np.transpose(np.matrix(self.state)) + K*(self.h(position)-self.h(self.state))
         self.state = np.squeeze(np.asarray(np.transpose(new_state)))
         self.covariance = (I-K)*self.covariance
 
     def run_ekm(self, control, position):
         self.prediction_step(control)
-        print(self.state)
-        self.update_step(position)
+        # self.update_step(position)
