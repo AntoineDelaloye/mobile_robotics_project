@@ -1,13 +1,15 @@
 # imports
 import math
 import numpy as np
-import import_ipynb     # won't need this at the end
-from Vision import Vision           # Will be 'from Vision import Vision' Won't even need this at the end
+#import import_ipynb     # won't need this at the end
+#from Vision import Vision           # Will be 'from Vision import Vision' Won't even need this at the end
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
 class Global_navigation:
-  def __init__(self, grid, start, goal, width_map_cm):
+
+
+  def __init__(self, grid, start, goal, width_square_cm):
     self.grid = grid
     self.height = grid.shape[0]
     self.width = grid.shape[1]
@@ -15,7 +17,7 @@ class Global_navigation:
     self.goal = goal
     self.max_val = max(self.height, self.width)
     self.size_thymio = 11.2 # centimeters
-    self.radius = math.floor(self.size_thymio/(2*(width_map_cm/self.width))) + 1 # number of squares not to use in the algorithm for
+    self.radius = math.floor(self.size_thymio/(2*(width_square_cm))) + 3 # number of squares not to use in the algorithm for
                                                                                   # the Thymio to stay out of the fixed obstacles
                                                                                   # or hardcode it if too complicated to have
     self.path = []
@@ -23,7 +25,6 @@ class Global_navigation:
   def Plot(self, visitedNodes, path):
     """
     Function to create a figure and plot it with the successful path and the squares that were visited
-
     :param visitedNodes: squares visited by the A-star algorithm while trying to find the optimal path
     :param path: optimal path computed by the A-star algorithm
     """
@@ -50,6 +51,7 @@ class Global_navigation:
     ax.scatter(self.goal[1], self.goal[0], marker="o", color = 'purple', s=200)
     # Displaying the map
     ax.imshow(self.grid, cmap=cmap)
+    plt.savefig('A_star.png')
 
 
   def A_star_run(self):
@@ -85,7 +87,6 @@ def neighbors(row_number, column_number, radius, occupancy_grid):
 def grid_adjustement(occupancy_grid, height, width, radius):
   """
   Adjust the map to have obstacles widen of a bit more than half the size of the Thymio
-
   :param occupancy_grid: matrix of 1 and 0, 1 for an obstacle, 0 for free space
   :param height: height of the map
   :param width: width of the map
@@ -248,6 +249,6 @@ def launch_A_star(start, goal, width, height, occupancy_grid):
   # Run the A_star algorithm
   path, visitedNodes = A_Star(start, goal, h, coords, occupancy_grid, height, width)
   plot_possible = False
-  if path.any():
+  if True:# np.array(path).reshape(-1, 2).transpose().any():
     plot_possible = True            
-  return np.array(path), visitedNodes, plot_possible  
+  return np.array(path), visitedNodes, plot_possible
