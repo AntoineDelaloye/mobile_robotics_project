@@ -83,8 +83,8 @@ def motionControl(kalman_position, path, square_size, prox_value): ## state and 
     # position_x = round(position_x/square_size)
     # position_y = round(position_y/square_size)
     # checkState(position_x, position_y, prox_value)
-    print("current plan:",current_plan)
-    print("Prox values",prox_value)
+    # print("current plan:",current_plan)
+    # print("Prox values",prox_value)
     if current_plan == 0:
         saved_pos_idx = obstacleAvoidance(position_x, position_y, prox_value, path)
         if current_plan:
@@ -103,9 +103,11 @@ def motionControl(kalman_position, path, square_size, prox_value): ## state and 
         targetAngle = math.atan2((path[current_target_idx][0] - position_y),(path[current_target_idx][1] - position_x))*180/np.pi %(360)
 
         diff = position_angle - targetAngle
-        print("diff before:",diff)
+        # print("diff before:",diff)
         if (diff>180) : diff = diff-360 
-        print("diff after", diff)
+        if (diff<-180) : diff = 360+diff
+        # print("diff after", diff)
+
         if abs(diff) < range_angle:
             diff = 0
         motor_left_speed = int(thymio_speed + diff*turn_factor)
@@ -121,7 +123,7 @@ def motionControl(kalman_position, path, square_size, prox_value): ## state and 
             turn = turn
         else:    
             turn = ((obst[3] + obst[4]) > (obst[0] + obst[1]))
-        print("turn:",turn)
+        # print("turn:",turn)
         # true if turning clockwise, false if turning counter-clockwise
         # for i in range(5):
         #     spLeft += int(prox_value[i] * obstSpeedGain[i]/10)
@@ -136,8 +138,9 @@ def motionControl(kalman_position, path, square_size, prox_value): ## state and 
                 spRight = 120
                 # saved_pos_idx = obstacleAvoidance(position_x, position_y,prox_value,path)
                 # continue turning until the original path is not found
-                for i in range(3,np.shape(path)[0]-saved_pos_idx):
-                    if [position_y, position_x] == [path[saved_pos_idx+i][0], path[saved_pos_idx+i][1]]:
+                for i in range(4,np.shape(path)[0]-saved_pos_idx):
+                    #if [position_y, position_x] == [path[saved_pos_idx+i][0], path[saved_pos_idx+i][1]]:
+                    if (np.abs([position_y, position_x] - path[saved_pos_idx+i]) <= np.array([1,1])).all():
                         current_plan = 0
                         turn = -1
                         current_target_idx = saved_pos_idx + i + 1
@@ -153,12 +156,13 @@ def motionControl(kalman_position, path, square_size, prox_value): ## state and 
             spLeft = 50
             spRight = -50
             if max(obst[0:2]) < obstThrL:
-                print("sensors:",prox_value)
+                # print("sensors:",prox_value)
                 spLeft = 120
                 spRight = 200
                 # saved_pos_idx = obstacleAvoidance(position_x, position_y,prox_value,path)
-                for i in range(3,np.shape(path)[0]-saved_pos_idx):
-                    if [position_y, position_x] == [path[saved_pos_idx+i][0], path[saved_pos_idx+i][1]]:
+                for i in range(4,np.shape(path)[0]-saved_pos_idx):
+                    #if [position_y, position_x] == [path[saved_pos_idx+i][0], path[saved_pos_idx+i][1]]:
+                    if (np.abs([position_y, position_x] - path[saved_pos_idx+i]) <= np.array([1,1])).all():
                         current_plan = 0
                         turn = -1
                         current_target_idx = saved_pos_idx + i + 1
