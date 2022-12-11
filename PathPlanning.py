@@ -1,8 +1,6 @@
 # imports
 import math
 import numpy as np
-#import import_ipynb     # won't need this at the end
-#from Vision import Vision           # Will be 'from Vision import Vision' Won't even need this at the end
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
@@ -10,7 +8,7 @@ class Global_navigation:
 
 
   def __init__(self, grid, start, goal, width_square_cm):
-    self.grid = grid
+    self.grid = grid # matrix of 1 and 0, 1 for an obstacle, 0 for free space
     self.height = grid.shape[0]
     self.width = grid.shape[1]
     self.start = start
@@ -18,8 +16,7 @@ class Global_navigation:
     self.max_val = max(self.height, self.width)
     self.size_thymio = 11.2 # centimeters
     self.radius = math.floor(self.size_thymio/(2*(width_square_cm))) + 3 # number of squares not to use in the algorithm for
-                                                                                  # the Thymio to stay out of the fixed obstacles
-                                                                                  # or hardcode it if too complicated to have
+                                                                         # the Thymio to stay out of the fixed obstacles
     self.path = []
 
   def Plot(self, visitedNodes, path):
@@ -140,8 +137,7 @@ def A_Star(start, goal, h, coords, occupancy_grid, height, width):
   :param start: start node (x, y)
   :param goal_m: goal node (x, y)
   :param occupancy_grid: the grid map
-  :param movement: select between 4-connectivity ('4N') and 8-connectivity ('8N', default)
-  :return: a tuple that contains: (the resulting path in meters, the resulting path in data array indices)
+  :return: a tuple that contains: (array of all the checkpoints to reach the goal, all squares visited to find obtimal path)
   """
   
   # Check if the start and goal are within the boundaries of the map
@@ -228,12 +224,12 @@ def A_Star(start, goal, h, coords, occupancy_grid, height, width):
 def launch_A_star(start, goal, width, height, occupancy_grid):
   """
   Define needed parameters for the A_star algorithm and run the A_star
-  :param start:
-  :param goal:
-  :param width:
-  :param height:
-  :param occupancy_grid:
-  :return: a boolean value to verify if the
+  :param start: start point coordinates
+  :param goal: goal point coordinates
+  :param width: width of the map
+  :param height: height of the map
+  :param occupancy_grid: matrix of 1 and 0, 1 for an obstacle, 0 for free space
+  :return: the optimal path computed, the nodes visited by the algorithm, a boolean deciding if a plot is possible
   
   """
   x,y = np.mgrid[0:height:1, 0:width:1]
@@ -248,7 +244,5 @@ def launch_A_star(start, goal, width, height, occupancy_grid):
 
   # Run the A_star algorithm
   path, visitedNodes = A_Star(start, goal, h, coords, occupancy_grid, height, width)
-  plot_possible = False
-  if True:# np.array(path).reshape(-1, 2).transpose().any():
-    plot_possible = True            
+  plot_possible = True      
   return np.array(path), visitedNodes, plot_possible
