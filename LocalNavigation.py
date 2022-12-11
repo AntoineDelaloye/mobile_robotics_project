@@ -68,7 +68,7 @@ def motionControl(kalman_position, path, square_size, prox_value):
     from the A* algorithm or to avoid a local obstacle 
     :param kalman_position: a vector containing coordinates x and y and angle of the Thymio inside the map
     :param path: contains all the coordinates of the optimal path from the start position to the goal 
-    :param square_size: 
+    :param square_size: size of one square from the grid map
     :param prox_value: proximity sensors value
     :return spRight: speed of the right motor 
     :return spLeft: speed of the left motor
