@@ -85,8 +85,8 @@ def motionControl(kalman_position, path, square_size, prox_value):
     # set the right speed of the motors depending on the situation
     if current_plan == 0:
         saved_pos_idx = obstacleAvoidance(position_x, position_y, prox_value, path)
-        #if current_plan:
-        #    return(0,0)
+        if current_plan:
+            return(0,0)
         
         if current_target_idx >= path.shape[0]:
             current_target_idx = path.shape[0]-1
